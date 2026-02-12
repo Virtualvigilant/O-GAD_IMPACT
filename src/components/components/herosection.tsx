@@ -9,21 +9,21 @@ export default function HeroSection() {
     const router = useRouter();
 
     return (
-        <section className='bg-white py-16 px-6 md:px-12 lg:px-24'>
-            <div className='max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
+        <section className='bg-white pl-6 flex items-center' style={{ height: 'calc(100vh - 4rem)' }}>
+            <div className='max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full'>
                 {/*text*/}
-                <div className='space-y-8 max-w-2xl'>
-                    <h1 className='text-4xl md:text-[3.25rem] font-black text-black leading-[1.1] tracking-tight uppercase'>
-                        Building Sustainable Business
-                        and Future Ready Organizations
+                <div className='space-y-6'>
+                    <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold text-black leading-[1.1] tracking-tight uppercase whitespace-nowrap' style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                        Building Sustainable Business<br />
+                        and Future Ready Organizations<br />
                         Across Africa
                     </h1>
-                    <p className='text-lg md:text-xl text-gray-800 leading-relaxed'>
+                    <p className='text-base md:text-lg lg:text-xl text-gray-800 leading-relaxed' style={{ fontFamily: 'DM Sans, sans-serif' }}>
                         we are a multidisciplinary consultancy helping founders, institutions,
                         and enterprises move from idea to execution and from growth to scale
                     </p>
 
-                    <div className="flex flex-wrap gap-4 pt-2">
+                    <div className="flex flex-wrap gap-4 pt-2" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                         <button className="bg-blue-600 hover:bg-blue-700 text-white px-9 py-3.5 rounded-md font-bold text-sm tracking-wider transition-all hover:shadow-lg uppercase">
                             Work with us
                         </button>
@@ -34,13 +34,13 @@ export default function HeroSection() {
                 </div>
 
                 {/* illustration*/}
-                <div className='flex justify-center lg:justify-end'>
+                <div className='flex justify-center lg:justify-end items-start pt-8'>
                     <Image
                         src="/images/hero.png"
                         alt="Growth and Strategy Illustration"
-                        width={600}
-                        height={500}
-                        className='object-contain'
+                        width={650}
+                        height={550}
+                        className='object-contain max-h-[60vh]'
                         priority
                     />
                 </div>
