@@ -9,8 +9,8 @@ export default function HeroSection() {
     const router = useRouter();
 
     return (
-        <section className='bg-white pl-6 flex items-center' style={{ height: 'calc(100vh - 4rem)' }}>
-            <div className='max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full'>
+        <section className='bg-white py-20 flex items-center' style={{ minHeight: 'calc(100vh - 4rem)' }}>
+            <div className='max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full'>
                 {/*text*/}
                 <div className='space-y-8 max-w-2xl'>
                     <h1 className='text-4xl md:text-[3.25rem] font-black text-black leading-[1.1] tracking-tight uppercase'>
