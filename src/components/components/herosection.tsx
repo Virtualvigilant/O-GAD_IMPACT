@@ -14,9 +14,7 @@ export default function HeroSection() {
                 {/*text*/}
                 <div className='space-y-8 max-w-2xl'>
                     <h1 className='text-4xl md:text-[3.25rem] font-black text-black leading-[1.1] tracking-tight uppercase'>
-                        Building Sustainable Business
-                        and Future Ready Organizations
-                        Across Africa
+                        Building Sustainable Business and Future Ready Organizations Across Africa
                     </h1>
                     <p className='text-base md:text-lg lg:text-xl text-gray-800 leading-relaxed' style={{ fontFamily: 'DM Sans, sans-serif' }}>
                         we are a multidisciplinary consultancy helping founders, institutions,
