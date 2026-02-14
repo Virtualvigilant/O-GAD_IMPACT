@@ -12,7 +12,11 @@
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+<<<<<<< HEAD
     "react-icons":"5.4.0"
+=======
+    "react-icons": "^5.4.0"
+>>>>>>> ae0dedc (feat: Implement initial page layout with hero section and footer components, and add react-icons dependency.)
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -12,10 +12,10 @@ export default function HeroSection() {
         <section className='bg-white pl-6 flex items-center' style={{ height: 'calc(100vh - 4rem)' }}>
             <div className='max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full'>
                 {/*text*/}
-                <div className='space-y-6'>
-                    <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold text-black leading-[1.1] tracking-tight uppercase whitespace-nowrap' style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                        Building Sustainable Business<br />
-                        and Future Ready Organizations<br />
+                <div className='space-y-8 max-w-2xl'>
+                    <h1 className='text-4xl md:text-[3.25rem] font-black text-black leading-[1.1] tracking-tight uppercase'>
+                        Building Sustainable Business
+                        and Future Ready Organizations
                         Across Africa
                     </h1>
                     <p className='text-base md:text-lg lg:text-xl text-gray-800 leading-relaxed' style={{ fontFamily: 'DM Sans, sans-serif' }}>
