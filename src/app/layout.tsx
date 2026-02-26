@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, League_Spartan, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Footer from "../components/components/Footer";
+import Navbar from "../components/components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +12,18 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const leagueSpartan = League_Spartan({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,8 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${leagueSpartan.variable} ${dmSans.variable} antialiased`}
       >
+        <Navbar />
         {children}
         <Footer />
       </body>

@@ -36,11 +36,11 @@ const Footer = () => {
                 <div>
                     <h3 className="Font-semibold mb-6 text-sm uppercase tracking-wider">Services</h3>
                     <ul className="space-y-4 text-gray-400 text-sm">
-                        <li><Link href="#" className="hover:text-white">Business & Strategy Consultancy</Link></li>
-                        <li><Link href="#" className="hover:text-white">Technology & Digital Transformation</Link></li>
-                        <li><Link href="#" className="hover:text-white">Legal & Business Structuring</Link></li>
-                        <li><Link href="#" className="hover:text-white">Marketing, Sales & Growth Advisory</Link></li>
-                        <li><Link href="#" className="hover:text-white">Scaling & Expansion Support</Link></li>
+                        <li><Link href="/services/business-strategy" className="hover:text-white">Business & Strategy Consultancy</Link></li>
+                        <li><Link href="/services/technology" className="hover:text-white">Technology & Digital Transformation</Link></li>
+                        <li><Link href="/services/legal" className="hover:text-white">Legal & Business Structuring</Link></li>
+                        <li><Link href="/services/marketing" className="hover:text-white">Marketing, Sales & Growth Advisory</Link></li>
+                        <li><Link href="/services/scaling" className="hover:text-white">Scaling & Expansion Support</Link></li>
                     </ul>
                 </div>
                 {/* Column 3: Company */}
