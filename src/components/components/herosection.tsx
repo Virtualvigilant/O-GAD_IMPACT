@@ -21,7 +21,7 @@ export default function HeroSection() {
             id: 1,
             title: 'We champion the bold to achieve the extraordinary.',
             subtitle: 'Transforming ambition into tangible results through strategic consulting.',
-            image: '/images/hero_images/business-hero.jpg',
+            image: '/images/hero_images/business-hero (2).jpg',
             cta: 'Get Started',
             category: 'Business Strategy'
         },
@@ -29,7 +29,7 @@ export default function HeroSection() {
             id: 2,
             title: 'Building sustainable business growth across your organization today.',
             subtitle: 'Creating future-ready organizations across Africa and beyond always.',
-            image: '/images/hero_images/scale-hero.jpg',
+            image: '/images/hero_images/scale-hero (2).jpg',
             cta: 'Get Started',
             category: 'Scale & Growth'
         },
@@ -37,7 +37,7 @@ export default function HeroSection() {
             id: 3,
             title: 'From idea to execution with precision and excellence.',
             subtitle: 'Moving your vision from concept to market leadership.',
-            image: '/images/hero_images/tech-hero.jpg',
+            image: '/images/hero_images/technology-hero.jpg',
             cta: 'Get Started',
             category: 'Technology'
         },
@@ -45,7 +45,7 @@ export default function HeroSection() {
             id: 4,
             title: 'Strategic growth for your business objectives and goals.',
             subtitle: 'Unlocking potential through innovative marketing strategies now available.',
-            image: '/images/hero_images/marketing-hero.jpg',
+            image: '/images/hero_images/Home-hero.jpg',
             cta: 'Get Started',
             category: 'Marketing & Growth'
         },
@@ -53,7 +53,7 @@ export default function HeroSection() {
             id: 5,
             title: 'Legal expertise to guide your business forward.',
             subtitle: 'Navigating complex legal landscapes with strategic counsel.',
-            image: '/images/hero_images/law-hero.jpg',
+            image: '/images/hero_images/Law-hero (2).jpg',
             cta: 'Get Started',
             category: 'Law'
         }
@@ -105,7 +105,7 @@ export default function HeroSection() {
                                 priority={index === currentSlide}
                                 unoptimized
                             />
-                            <div className='absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent'></div>
+                            <div className='absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30'></div>
                         </div>
 
                         {/* Content Overlay */}

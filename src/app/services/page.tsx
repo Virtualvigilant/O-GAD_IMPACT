@@ -86,7 +86,7 @@ export default function ServicesPage() {
         backgroundAttachment: 'fixed',
         minHeight: '550px'
       }}>
-        <div className='absolute inset-0' style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%)' }}></div>
+        <div className='absolute inset-0' style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%)' }}></div>
         <div className='max-w-7xl mx-auto px-6 md:px-12 relative z-10'>
           <div className='text-center'>
             <h1 className='text-5xl md:text-6xl font-bold text-white mb-6'>
