@@ -1,6 +1,10 @@
 'use client';
+import { useState } from 'react';
+import BookingModal from '@/components/BookingModal';
 
 export default function BusinessStrategyPage() {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+
   return (
     <main className='min-h-screen bg-white'>
       {/* Hero Section */}
@@ -24,7 +28,7 @@ export default function BusinessStrategyPage() {
               Strategic clarity, organizational alignment, and execution excellence for sustainable business growth
             </p>
             <div className='mt-10'>
-              <button className='px-10 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors' style={{ backgroundColor: '#306CEC', color: 'white' }}>
+              <button onClick={() => setIsBookingOpen(true)} className='px-10 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors' style={{ backgroundColor: '#306CEC', color: 'white' }}>
                 Book a Session
               </button>
             </div>
@@ -127,6 +131,11 @@ export default function BusinessStrategyPage() {
         </div>
       </section>
 
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+        defaultService="business-strategy"
+      />
     </main>
   );
 }

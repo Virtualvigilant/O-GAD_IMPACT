@@ -3,12 +3,16 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { supabase } from '@/lib/supabaseClient';
+import { checkIsAdmin } from '@/lib/checkAdmin';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeHash, setActiveHash] = useState("");
     const [isServicesOpen, setIsServicesOpen] = useState(false);
     const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const pathname = usePathname() || "";
     const isNavigating = useRef(false);
 
@@ -27,7 +31,7 @@ export default function Navbar() {
             const newHash = window.location.hash;
             setActiveHash(newHash);
             isNavigating.current = true;
-            
+
             // Reset navigation flag after a delay to allow scroll to complete
             setTimeout(() => {
                 isNavigating.current = false;
@@ -46,7 +50,7 @@ export default function Navbar() {
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
             // Only update from observer if we're not actively navigating
             if (isNavigating.current) return;
-            
+
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const id = entry.target.id;
@@ -58,19 +62,44 @@ export default function Navbar() {
         };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-        
+
         // Only observe specific sections for navbar
         const hero = document.getElementById('hero');
         const about = document.getElementById('our-company');
         const contact = document.getElementById('get-in-touch');
-        
+
         if (hero) observer.observe(hero);
         if (about) observer.observe(about);
         if (contact) observer.observe(contact);
 
+        // Supabase Auth Listener
+        const checkUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            if (user) {
+                const adminStatus = await checkIsAdmin(user.id);
+                setIsAdmin(adminStatus);
+            } else {
+                setIsAdmin(false);
+            }
+        };
+        checkUser();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+            const currentUser = session?.user ?? null;
+            setUser(currentUser);
+            if (currentUser) {
+                const adminStatus = await checkIsAdmin(currentUser.id);
+                setIsAdmin(adminStatus);
+            } else {
+                setIsAdmin(false);
+            }
+        });
+
         return () => {
             window.removeEventListener('hashchange', handleHashChange);
             observer.disconnect();
+            authListener.subscription.unsubscribe();
         };
     }, []);
 
@@ -94,15 +123,15 @@ export default function Navbar() {
         if (href.startsWith("/#")) {
             const sectionId = href.slice(2); // Remove "/#" to get just the ID
             const hashValue = `#${sectionId}`; // Proper hash format
-            
+
             // If not on homepage, navigate to homepage with the hash first
             if (pathname !== "/") {
                 window.location.href = href;
                 return;
             }
-            
+
             isNavigating.current = true;
-            
+
             // Find and scroll to the element on current page
             const element = document.getElementById(sectionId);
             if (element) {
@@ -111,7 +140,7 @@ export default function Navbar() {
                 window.location.hash = hashValue;
                 setActiveHash(hashValue);
             }
-            
+
             // Reset navigation flag
             setTimeout(() => {
                 isNavigating.current = false;
@@ -138,17 +167,33 @@ export default function Navbar() {
     };
 
     const showNavbarGradient = () => {
-        // Show gradient unless we're on homepage and in hero section
+        // Show gradient unless we're on homepage and in hero section, or at the top of a dashboard
         if (pathname === "/" && (activeHash === "" || activeHash === "#hero")) {
+            return false;
+        }
+        if ((pathname === "/dashboard" || pathname === "/admin/dashboard") && !scrolled) {
             return false;
         }
         return true;
     };
 
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isScrolled = window.scrollY > 50;
+            if (isScrolled !== scrolled) {
+                setScrolled(isScrolled);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [scrolled]);
+
     return (
-        <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
-            showNavbarGradient() ? 'bg-gradient-to-b from-black/60 to-black/40' : 'bg-transparent'
-        }`}>
+        <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${showNavbarGradient() ? 'bg-gray-900 border-b border-gray-800' : 'bg-transparent'
+            }`}>
             <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -160,18 +205,17 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center gap-1" style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                        {navLinks.map((link) => 
+                        {navLinks.map((link) =>
                             link.isDropdown ? (
                                 <div key={link.href} className="relative group">
                                     <Link
                                         href={link.href}
                                         onMouseEnter={() => setIsServicesOpen(true)}
                                         onMouseLeave={() => setIsServicesOpen(false)}
-                                        className={`px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2 ${
-                                            pathname.startsWith(link.href)
-                                                ? 'text-white'
-                                                : 'text-white hover:text-white/80'
-                                        }`}
+                                        className={`px-4 py-2 font-medium rounded-lg transition-colors flex items-center gap-2 ${pathname.startsWith(link.href)
+                                            ? 'text-white'
+                                            : 'text-white hover:text-white/80'
+                                            }`}
                                         style={{
                                             backgroundColor: pathname.startsWith(link.href) ? '#306CEC' : 'transparent'
                                         }}
@@ -181,7 +225,7 @@ export default function Navbar() {
                                             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 14l-7 7m0 0l-7-7' />
                                         </svg>
                                     </Link>
-                                    
+
                                     {/* Dropdown Menu */}
                                     {isServicesOpen && (
                                         <div
@@ -206,11 +250,10 @@ export default function Navbar() {
                                 <button
                                     key={link.href}
                                     onClick={() => handleNavClick(link.href)}
-                                    className={`px-4 py-2 font-medium rounded-lg transition-colors ${
-                                        isActive(link.href)
-                                            ? 'text-white'
-                                            : 'text-white hover:text-white/80'
-                                    }`}
+                                    className={`px-4 py-2 font-medium rounded-lg transition-colors ${isActive(link.href)
+                                        ? 'text-white'
+                                        : 'text-white hover:text-white/80'
+                                        }`}
                                     style={{
                                         backgroundColor: isActive(link.href) ? '#306CEC' : 'transparent'
                                     }}
@@ -221,11 +264,10 @@ export default function Navbar() {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className={`px-4 py-2 font-medium rounded-lg transition-colors ${
-                                        isActive(link.href)
-                                            ? 'text-white'
-                                            : 'text-white hover:text-white/80'
-                                    }`}
+                                    className={`px-4 py-2 font-medium rounded-lg transition-colors ${isActive(link.href)
+                                        ? 'text-white'
+                                        : 'text-white hover:text-white/80'
+                                        }`}
                                     style={{
                                         backgroundColor: isActive(link.href) ? '#306CEC' : 'transparent'
                                     }}
@@ -238,9 +280,20 @@ export default function Navbar() {
 
                     {/* CTA Button + Mobile Menu */}
                     <div className="flex items-center gap-4">
-                        <button className="hidden md:block text-white px-6 py-2.5 rounded-lg font-semibold transition-all hover:shadow-lg" style={{ fontFamily: 'DM Sans, sans-serif', backgroundColor: '#306CEC' }}>
-                            Get Started
-                        </button>
+                        {user ? (
+                            <div className="hidden md:flex items-center gap-4">
+                                <button onClick={() => supabase.auth.signOut()} className="text-white/80 hover:text-white font-medium text-sm transition-colors">
+                                    Sign Out
+                                </button>
+                                <Link href={isAdmin ? "/admin/dashboard" : "/dashboard"} className="text-white px-6 py-2.5 rounded-lg font-semibold transition-all hover:shadow-lg" style={{ fontFamily: 'DM Sans, sans-serif', backgroundColor: '#306CEC' }}>
+                                    {isAdmin ? "Admin Portal" : "Dashboard"}
+                                </Link>
+                            </div>
+                        ) : (
+                            <Link href="/auth/login" className="hidden md:block text-white px-6 py-2.5 rounded-lg font-semibold transition-all hover:shadow-lg" style={{ fontFamily: 'DM Sans, sans-serif', backgroundColor: '#306CEC' }}>
+                                Log In
+                            </Link>
+                        )}
 
                         {/* Mobile Menu Button */}
                         <button
@@ -298,11 +351,10 @@ export default function Navbar() {
                                         handleNavClick(link.href);
                                         setIsOpen(false);
                                     }}
-                                    className={`block w-full text-left px-4 py-2 font-medium rounded-lg transition-colors ${
-                                        isActive(link.href)
-                                            ? 'text-white'
-                                            : 'text-white hover:bg-white/10'
-                                    }`}
+                                    className={`block w-full text-left px-4 py-2 font-medium rounded-lg transition-colors ${isActive(link.href)
+                                        ? 'text-white'
+                                        : 'text-white hover:bg-white/10'
+                                        }`}
                                     style={{
                                         backgroundColor: isActive(link.href) ? '#306CEC' : 'transparent'
                                     }}
@@ -313,11 +365,10 @@ export default function Navbar() {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className={`block px-4 py-2 font-medium rounded-lg transition-colors ${
-                                        isActive(link.href)
-                                            ? 'text-white'
-                                            : 'text-white hover:bg-white/10'
-                                    }`}
+                                    className={`block px-4 py-2 font-medium rounded-lg transition-colors ${isActive(link.href)
+                                        ? 'text-white'
+                                        : 'text-white hover:bg-white/10'
+                                        }`}
                                     style={{
                                         backgroundColor: isActive(link.href) ? '#306CEC' : 'transparent'
                                     }}
@@ -326,9 +377,36 @@ export default function Navbar() {
                                 </Link>
                             )
                         )}
-                        <button className="w-full mt-4 text-white px-6 py-2.5 rounded-lg font-semibold transition-all" style={{ backgroundColor: '#306CEC' }}>
-                            Get Started
-                        </button>
+                        {user ? (
+                            <>
+                                <Link
+                                    href={isAdmin ? "/admin/dashboard" : "/dashboard"}
+                                    onClick={() => setIsOpen(false)}
+                                    className="block w-full text-center mt-4 text-white px-6 py-2.5 rounded-lg font-semibold transition-all"
+                                    style={{ backgroundColor: '#306CEC' }}
+                                >
+                                    {isAdmin ? "Admin Portal" : "Dashboard"}
+                                </Link>
+                                <button
+                                    onClick={() => {
+                                        supabase.auth.signOut();
+                                        setIsOpen(false);
+                                    }}
+                                    className="block w-full text-center mt-2 text-white/80 hover:text-white px-6 py-2.5 rounded-lg font-semibold transition-all border border-white/20"
+                                >
+                                    Sign Out
+                                </button>
+                            </>
+                        ) : (
+                            <Link
+                                href="/auth/login"
+                                onClick={() => setIsOpen(false)}
+                                className="block w-full text-center mt-4 text-white px-6 py-2.5 rounded-lg font-semibold transition-all"
+                                style={{ backgroundColor: '#306CEC' }}
+                            >
+                                Log In
+                            </Link>
+                        )}
                     </div>
                 )}
             </div>

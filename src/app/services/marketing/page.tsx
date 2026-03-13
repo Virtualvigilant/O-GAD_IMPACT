@@ -1,6 +1,10 @@
 'use client';
+import { useState } from 'react';
+import BookingModal from '@/components/BookingModal';
 
 export default function MarketingPage() {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+
   return (
     <main className='min-h-screen bg-white'>
       {/* Hero Section */}
@@ -24,7 +28,7 @@ export default function MarketingPage() {
               Build a powerful engine for customer acquisition, conversion, and sustainable revenue growth
             </p>
             <div className='mt-10'>
-              <button className='px-10 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors' style={{ backgroundColor: '#306CEC', color: 'white' }}>
+              <button onClick={() => setIsBookingOpen(true)} className='px-10 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors' style={{ backgroundColor: '#306CEC', color: 'white' }}>
                 Book a Session
               </button>
             </div>
@@ -127,6 +131,11 @@ export default function MarketingPage() {
         </div>
       </section>
 
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+        defaultService="marketing"
+      />
     </main>
   );
 }
